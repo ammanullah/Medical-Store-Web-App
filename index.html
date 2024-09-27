@@ -3,160 +3,694 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Store Web Application</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Professional Medical Store Finder</title>
+
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Reset */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
+            box-sizing: border-box;
         }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-search-input {
+
             text-align: center;
         }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+
+        /* Transparent Header */
+        .transparent-header {
+            position: fixed;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .transparent-header:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        nav {
             display: flex;
-            justify-content: center;
-            background-color: #343a40;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        nav h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #05C3DD;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
         nav ul li {
-            margin: 0 15px;
+            margin-left: 2rem;
         }
+
         nav ul li a {
-            color: white;
             text-decoration: none;
-            padding: 10px 15px;
-            display: block;
+            color: #05C3DD;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
+
         nav ul li a:hover {
-            background-color: #007bff;
-            transition: 0.3s;
+            color: #028ba8;
         }
-        .container {
-            margin: 20px;
-        }
-        .search-box, .upload-box, .reviews-box, .cart-box {
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .button {
-            background-color: #007bff;
+
+        .cta a {
+            background-color: #05C3DD;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta a:hover {
+            background-color: #028ba8;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            background-image: url('img-1.jpeg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            font-weight: 600;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .hero .btn {
+            background-color: #05C3DD;
+            color: white;
+            padding: 1rem 2rem;
             border-radius: 5px;
+            text-decoration: none;
+            border-radius: 40px;
         }
-        .button:hover {
-            background-color: #0056b3;
+
+        .hero .btn:hover {
+            background-color: #05C3DD;
         }
+
+        /* Container */
+        .container {
+            width: 85%;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        /* Feature Section */
+        .features-section .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .feature h3 {
+            color: #05C3DD;
+            margin-bottom: 1rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works .steps {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .steps .step {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .steps .step h3 {
+            margin-bottom: 0.5rem;
+            color: #05C3DD;
+        }
+
+        /* Map Section */
+        #map {
+            height: 500px;
+            width: 100%;
+            background-color: #e0e0e0;
+        }
+
+        /* Testimonials Section */
+        .testimonials-section .testimonial {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .testimonial blockquote {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial cite {
+            display: block;
+            font-weight: 600;
+            color: #05C3DD;
+        }
+
+        /* FAQ Section */
+        .faq-section .faq-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-section .faq-item h3 {
+            font-size: 1.5rem;
+            color: #05C3DD;
+        }
+
+        /* Contact Section */
+        .contact-section a {
+            color: #05C3DD;
+            text-decoration: none;
+        }
+
+        .contact-section a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: #333;
+            color: white;
+        }
+        
+
+
+        /* Search Section */
+#product-search {
+    background-color: #f0f8ff;
+    padding: 3rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+#product-search h2 {
+    font-size: 2.2rem;
+    color: #05C3DD;
+    margin-bottom: 2rem;
+}
+
+#product-search input {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    width: 60%;
+    border: 2px solid #05C3DD;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+}
+
+#product-search button {
+    padding: 0.8rem 1.2rem;
+    background-color: #05C3DD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#product-search button:hover {
+    background-color: #028ba8;
+}
+
+#search-results {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+/* Order Medicine Section */
+#online-order {
+    background-color: #fff;
+    padding: 3rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+#online-order h2 {
+    font-size: 2.2rem;
+    color: #05C3DD;
+    margin-bottom: 2rem;
+}
+
+#online-order h3 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+#online-order label {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+}
+
+#online-order input[type="number"] {
+    padding: 0.8rem;
+    font-size: 1rem;
+    width: 80px;
+    border: 2px solid #05C3DD;
+    border-radius: 5px;
+}
+
+#online-order button {
+    padding: 0.8rem 1.2rem;
+    background-color: #05C3DD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#online-order button:hover {
+    background-color: #028ba8;
+}
+
+#cart {
+    margin-top: 2rem;
+}
+
+#cart h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#cart ul {
+    list-style: none;
+    padding: 0;
+}
+
+#cart ul li {
+    background-color: #f0f8ff;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+#online-order select {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 2px solid #05C3DD;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+/* Upload Prescription Section */
+#prescription-upload {
+    background-color: #f0f8ff;
+    padding: 3rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#prescription-upload h2 {
+    font-size: 2.2rem;
+    color: #05C3DD;
+    margin-bottom: 2rem;
+}
+
+#prescription-upload input[type="file"] {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 2px solid #05C3DD;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+#prescription-upload button {
+    padding: 0.8rem 1.5rem;
+    background-color: #05C3DD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#prescription-upload button:hover {
+    background-color: #028ba8;
+}
+
+
+
+/* Transparent Header */
+.transparent-header {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1); /* Initially transparent */
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 1rem 2rem;
+    transition: background-color 0.3s ease; /* Smooth transition */
+    color: #fff;
+}
+
+/* Opaque header when scrolled */
+.header-opaque {
+    background-color: white !important; /* Opaque white background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better separation */
+}
+
+nav ul li a {
+    color: #fff; /* Initial link color */
+    transition: color 0.3s ease;
+}
+
+nav ul li a :hover{
+    color: #333; /* Initial link color */
+    transition: color 0.3s ease;
+}
+
+/* Change link color on scroll */
+.header-opaque nav ul li a {
+    color: #333 !important; /* Darker color on opaque background */
+}
+
+
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Medical Store Web Application</h1>
-    <p>Access medications easily and efficiently</p>
-</header>
+    <!-- Header -->
+    <header class="transparent-header">
+        <nav>
+            <div class="logo">
+                <h1>MedStore Finder</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQs</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="cta">
+                <a href="#search-locator" class="btn">Find Store</a>
+            </div>
+        </nav>
+    </header>
 
-<nav>
-    <ul>
-        <li><a href="#store-locator">Store Locator</a></li>
-        <li><a href="#search-products">Search Products</a></li>
-        <li><a href="#upload-prescription">Upload Prescription</a></li>
-        <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#customer-support">Customer Support</a></li>
-    </ul>
-</nav>
-
-<div class="container">
-    <!-- Store Locator Section -->
-    <section id="store-locator" class="search-box">
-        <h2>Find Nearby Medical Stores</h2>
-        <input type="text" id="location" placeholder="Enter your location">
-        <button class="button" onclick="findStores()">Find Stores</button>
-        <div id="store-results"></div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h2>Your Health, One Click Away</h2>
+            <p>Locate nearby medical stores, order your medicines, and manage prescriptions with ease.</p>
+            <a href="#features" class="btn">Explore Features</a>
+        </div>
     </section>
 
-    <!-- Product Search Section -->
-    <section id="search-products" class="search-box">
-        <h2>Search Medications and Products</h2>
-        <input type="text" id="search" placeholder="Search for medications">
-        <button class="button" onclick="searchProducts()">Search</button>
-        <div id="product-results"></div>
+    <section id="product-search" class="container">
+        <h2>Search for Medications</h2>
+        <input type="text" id="product-search-input" placeholder="Enter medicine name..." />
+        <button onclick="searchProducts()">Search</button>
+        <div id="search-results"></div>
+    </section>  
+
+    <!-- Features Section -->
+    <section id="features" class="container features-section">
+        <h2>Our Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Interactive Store Locator</h3>
+                <p>Find nearby medical stores with an interactive map based on your current location.</p>
+            </div>
+            <div class="feature">
+                <h3>Product Search & Availability</h3>
+                <p>Search for specific health products and medications available in nearby stores with real-time updates.</p>
+            </div>
+            <div class="feature">
+                <h3>Real-Time Inventory Updates</h3>
+                <p>Always up-to-date stock information for nearby medical stores.</p>
+            </div>            
+            <div class="feature">
+                <h3>Product Search & Availability</h3>
+                <p>Search for medications and health products in nearby stores with real-time availability.</p>
+            </div>
+            <div class="feature">
+                <h3>Real-Time Inventory Updates</h3>
+                <p>Always up-to-date stock information to prevent ordering out-of-stock items.</p>
+            </div>
+            <div class="feature">
+                <h3>Prescription Upload</h3>
+                <p>Upload prescriptions and place your order securely online.</p>
+            </div>
+            <div class="feature">
+                <h3>Home Delivery & Pickup Options</h3>
+                <p>Choose home delivery or in-store pickup options with real-time tracking.</p>
+            </div>
+            <div class="feature">
+                <h3>Health Tips & Information</h3>
+                <p>Access health articles, tips, and medication information curated by professionals.</p>
+            </div>
+        </div>
     </section>
 
-    <!-- Prescription Upload Section -->
-    <section id="upload-prescription" class="upload-box">
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works container">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <h3>Step 1: Find a Store</h3>
+                <p>Use our interactive map or search feature to find medical stores near you.</p>
+            </div>
+            <div class="step">
+                <h3>Step 2: Search for Products</h3>
+                <p>Browse products and medications available in nearby stores.</p>
+            </div>
+            <div class="step">
+                <h3>Step 3: Order Online</h3>
+                <p>Select the products, choose payment options, and place your order securely.</p>
+            </div>            
+        </div>
+    </section>
+
+    <section id="online-order" class="container">
+        <h2>Order Your Medicines</h2>
+        <div>
+            <h3>Medicine: <span id="medicine-name">Paracetamol</span></h3>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" min="1" value="1">
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+        <div id="cart">
+            <h3>Your Cart</h3>
+            <ul id="cart-items"></ul>
+            <button onclick="checkout()">Proceed to Checkout</button>
+        </div>
+        <div>
+            <h3>Select Delivery Option:</h3>
+            <select id="delivery-option">
+                <option value="delivery">Home Delivery</option>
+                <option value="pickup">In-Store Pickup</option>
+            </select>
+        </div>
+        
+    </section>
+
+    <section id="prescription-upload" class="container">
         <h2>Upload Prescription</h2>
-        <input type="file" id="prescription" accept="image/*,application/pdf">
-        <button class="button" onclick="uploadPrescription()">Upload</button>
+        <input type="file" id="prescription-file">
+        <button onclick="uploadPrescription()">Upload</button>
+    </section>
+    
+    
+
+    <!-- Map Section -->
+    <section id="search-locator" class="map-section container">
+        <h2>Find Medical Stores Near You</h2>
+        <div id="map"></div>
     </section>
 
-    <!-- Reviews Section -->
-    <section id="reviews" class="reviews-box">
-        <h2>User Reviews</h2>
-        <textarea id="review-text" placeholder="Leave a review"></textarea>
-        <button class="button" onclick="submitReview()">Submit Review</button>
-        <div id="review-results"></div>
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section container">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial">
+            <blockquote>"This service has been a lifesaver for me and my family. We can now easily find nearby pharmacies and get our medicines on time."</blockquote>
+            <cite>- Priya Sharma</cite>
+        </div>
+        <div class="testimonial">
+            <blockquote>"I love the real-time inventory feature. No more running around to find the right pharmacy that has my prescription."</blockquote>
+            <cite>- Rahul Patel</cite>
+        </div>
     </section>
 
-    <!-- Customer Support Section -->
-    <section id="customer-support" class="cart-box">
-        <h2>Customer Support</h2>
-        <button class="button" onclick="openChat()">Chat with Support</button>
-        <button class="button" onclick="emailSupport()">Email Support</button>
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section container">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>Is the service free to use?</h3>
+            <p>Yes, our service is completely free for users to locate medical stores and order medications.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I upload multiple prescriptions?</h3>
+            <p>Yes, you can upload multiple prescriptions for different medications in a single order.</p>
+        </div>
     </section>
-</div>
 
-<script>
-    // Placeholder for store locator function
-    function findStores() {
-        let location = document.getElementById('location').value;
-        document.getElementById('store-results').innerHTML = `Showing results for stores near ${location}`;
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section container">
+        <h2>Contact Us</h2>
+        <p>If you have any questions or need help, feel free to <a href="mailto:support@medstorefinder.com">reach out to us</a>.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 MedStore Finder. All rights reserved.</p>
+    </footer>
+
+    <!-- Leaflet JS for Map -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13); // Change to default location
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        var map = L.map('map').setView([userLat, userLng], 13); 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([userLat, userLng]).addTo(map)
+            .bindPopup('Your location')
+            .openPopup();
+    });
+}
+            function searchProducts() {
+                const productName = document.getElementById('product-search-input').value;
+                document.getElementById('search-results').innerHTML = `Results for ${productName}: ...`;
+            }
+
+            let cart = [];
+    
+    function addToCart() {
+        const itemName = document.getElementById('medicine-name').innerText;
+        const quantity = document.getElementById('quantity').value;
+        cart.push({ item: itemName, quantity: quantity });
+        document.getElementById('cart-items').innerHTML += `<li>${itemName} - ${quantity}</li>`;
+    }
+    
+    function checkout() {
+        alert('Proceeding to payment');
     }
 
-    // Placeholder for product search function
-    function searchProducts() {
-        let query = document.getElementById('search').value;
-        document.getElementById('product-results').innerHTML = `Searching for products related to: ${query}`;
-    }
+  
+let inventory = { 'Paracetamol': 20, 'Aspirin': 15 };
 
-    // Placeholder for prescription upload
+function checkInventory(item) {
+    return inventory[item] || 0;
+}
+
     function uploadPrescription() {
-        let prescriptionFile = document.getElementById('prescription').files[0];
-        if (prescriptionFile) {
-            alert("Prescription uploaded successfully!");
+        const fileInput = document.getElementById('prescription-file');
+        if (fileInput.files.length > 0) {
+            alert('Prescription uploaded successfully!');
         } else {
-            alert("Please upload a file.");
+            alert('Please select a file to upload.');
         }
     }
 
-    // Placeholder for review submission
-    function submitReview() {
-        let review = document.getElementById('review-text').value;
-        document.getElementById('review-results').innerHTML += `<p>Review: ${review}</p>`;
-        document.getElementById('review-text').value = '';
-    }
+    window.addEventListener('scroll', function() {
+        const heroHeight = document.querySelector('.hero').offsetHeight;
+        const footer = document.querySelector('footer');
 
-    // Placeholder for customer support
-    function openChat() {
-        alert("Chat with customer support is currently unavailable.");
-    }
+        // Add a white background to the footer when scrolling past the hero section
+        if (window.scrollY > heroHeight) {
+            footer.style.backgroundColor = 'white';
+            footer.style.color = '#333'; // Change text color for better readability on white background
+        } else {
+            footer.style.backgroundColor = 'transparent';
+            footer.style.color = 'white'; // Revert to original color
+        }
+    });
+    window.addEventListener('scroll', function() {
+        const heroHeight = document.querySelector('.hero').offsetHeight;
+        const header = document.querySelector('.transparent-header');
 
-    function emailSupport() {
-        alert("Support email has been sent.");
-    }
-</script>
+        // Add opaque background when scrolling past the hero section
+        if (window.scrollY > heroHeight) {
+            header.classList.add('header-opaque');
+        } else {
+            header.classList.remove('header-opaque');
+        }
+    });
+    </script>
 
 </body>
 </html>
