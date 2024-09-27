@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Store Web Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            background-color: #343a40;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+        }
+        nav ul li a:hover {
+            background-color: #007bff;
+            transition: 0.3s;
+        }
+        .container {
+            margin: 20px;
+        }
+        .search-box, .upload-box, .reviews-box, .cart-box {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Medical Store Web Application</h1>
+    <p>Access medications easily and efficiently</p>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#store-locator">Store Locator</a></li>
+        <li><a href="#search-products">Search Products</a></li>
+        <li><a href="#upload-prescription">Upload Prescription</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#customer-support">Customer Support</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <!-- Store Locator Section -->
+    <section id="store-locator" class="search-box">
+        <h2>Find Nearby Medical Stores</h2>
+        <input type="text" id="location" placeholder="Enter your location">
+        <button class="button" onclick="findStores()">Find Stores</button>
+        <div id="store-results"></div>
+    </section>
+
+    <!-- Product Search Section -->
+    <section id="search-products" class="search-box">
+        <h2>Search Medications and Products</h2>
+        <input type="text" id="search" placeholder="Search for medications">
+        <button class="button" onclick="searchProducts()">Search</button>
+        <div id="product-results"></div>
+    </section>
+
+    <!-- Prescription Upload Section -->
+    <section id="upload-prescription" class="upload-box">
+        <h2>Upload Prescription</h2>
+        <input type="file" id="prescription" accept="image/*,application/pdf">
+        <button class="button" onclick="uploadPrescription()">Upload</button>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-box">
+        <h2>User Reviews</h2>
+        <textarea id="review-text" placeholder="Leave a review"></textarea>
+        <button class="button" onclick="submitReview()">Submit Review</button>
+        <div id="review-results"></div>
+    </section>
+
+    <!-- Customer Support Section -->
+    <section id="customer-support" class="cart-box">
+        <h2>Customer Support</h2>
+        <button class="button" onclick="openChat()">Chat with Support</button>
+        <button class="button" onclick="emailSupport()">Email Support</button>
+    </section>
+</div>
+
+<script>
+    // Placeholder for store locator function
+    function findStores() {
+        let location = document.getElementById('location').value;
+        document.getElementById('store-results').innerHTML = `Showing results for stores near ${location}`;
+    }
+
+    // Placeholder for product search function
+    function searchProducts() {
+        let query = document.getElementById('search').value;
+        document.getElementById('product-results').innerHTML = `Searching for products related to: ${query}`;
+    }
+
+    // Placeholder for prescription upload
+    function uploadPrescription() {
+        let prescriptionFile = document.getElementById('prescription').files[0];
+        if (prescriptionFile) {
+            alert("Prescription uploaded successfully!");
+        } else {
+            alert("Please upload a file.");
+        }
+    }
+
+    // Placeholder for review submission
+    function submitReview() {
+        let review = document.getElementById('review-text').value;
+        document.getElementById('review-results').innerHTML += `<p>Review: ${review}</p>`;
+        document.getElementById('review-text').value = '';
+    }
+
+    // Placeholder for customer support
+    function openChat() {
+        alert("Chat with customer support is currently unavailable.");
+    }
+
+    function emailSupport() {
+        alert("Support email has been sent.");
+    }
+</script>
+
+</body>
+</html>
